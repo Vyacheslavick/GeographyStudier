@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements CountryRecyclerAd
             Intent intent = new Intent(this, StartActivity.class);
             startActivity(intent);
         } catch (FileNotFoundException e) {
-            login.setText("This user with this password not found");
+            login.setText(R.string.user_not_found);
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GeographyStudier</string>
+    <string name="user_not_found">This user with this password not found</string>
 </resources>
