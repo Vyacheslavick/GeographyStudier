@@ -23,6 +23,8 @@
         <activity android:name=".ResultActivity" />
         <activity android:name=".StartActivity" />
         <activity android:name=".RegistrationActivity"></activity>
+
+        <service android:name=".DataBaseIntentService" />
     </application>
 
 </manifest>

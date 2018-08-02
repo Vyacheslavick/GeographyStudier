@@ -1,9 +1,11 @@
 package com.example.slavick.geographystudier;
 
 
+import android.app.IntentService;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.UserHandle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,36 +67,15 @@ public class MainActivity extends AppCompatActivity implements CountryRecyclerAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        db = Room.databaseBuilder(getApplicationContext(),
-                SovietDataBase.class, "countries").build();
-        Observable.just(db).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<SovietDataBase, List<Country>>() {
-            @Override
-            public List<Country> call(SovietDataBase sovietDataBase) {
-                Retrofit.getAll(new Callback<List<Country>>() {
-                    @Override
-                    public void success(List<Country> countries, Response response) {
-                        for (int i = 0; i < countries.size(); i++) {
-                            Country country = new Country(i, countries.get(i).name ,countries.get(i).capital);
-                            db.getCountryDao().insertAll(country);
-                        }
-                    }
-                    @Override
-                    public void failure(RetrofitError error) {
-
-                    }
-                });
-                return null;
-            }
-        }).subscribe(new Action1<List<Country>>() {
-            @Override
-            public void call(List<Country> countries) {
-                final RecyclerView list = findViewById(R.id.list);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-                list.setLayoutManager(layoutManager);
-                adapter = new CountryRecyclerAdapter(MainActivity.this, db.getCountryDao().getAll(), MainActivity.this);list.setAdapter(adapter);
-            }
-        });
-
+        Intent intent = new Intent(this, DataBaseIntentService.class);
+        startService(intent);
+        if (haveInternet){
+            final RecyclerView list = findViewById(R.id.list);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+            list.setLayoutManager(layoutManager);
+            adapter = new CountryRecyclerAdapter(MainActivity.this, db.getCountryDao().getAll(), MainActivity.this);
+            list.setAdapter(adapter);
+        }
     }
 
 

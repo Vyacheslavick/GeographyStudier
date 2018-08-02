@@ -8,8 +8,11 @@ import java.util.List;
 
 @Dao
 public interface CountryDao {
+//    @Insert
+//    void insertAll(Country... countries);
+
     @Insert
-    public void insertAll(Country... countries);
+    void insert(Country country);
 
     @Query("Select * FROM country WHERE name = :name ")
     List<Country> getCountryWithName(String name);
