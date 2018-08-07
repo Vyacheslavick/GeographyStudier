@@ -21,4 +21,13 @@ public class Country {
         this.name = name;
         this.capital = capital;
     }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", capital='" + capital + '\'' +
+                '}';
+    }
 }

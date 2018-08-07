@@ -49,13 +49,18 @@ public class RegistrationActivity extends AppCompatActivity implements CountryRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
-        db = Room.databaseBuilder(getApplicationContext(), SovietDataBase.class, "countries").build();
-        countryList = db.getCountryDao().getAll();
-        final RecyclerView list = findViewById(R.id.countryList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(RegistrationActivity.this);
-        list.setLayoutManager(layoutManager);
-        adapter = new CountryRecyclerAdapter(RegistrationActivity.this, countryList, RegistrationActivity.this);
-        list.setAdapter(adapter);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                db = Room.databaseBuilder(getApplicationContext(), SovietDataBase.class, "countries").build();
+                countryList = db.getCountryDao().getAll();
+                final RecyclerView list = findViewById(R.id.countryList);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(RegistrationActivity.this);
+                list.setLayoutManager(layoutManager);
+                adapter = new CountryRecyclerAdapter(RegistrationActivity.this, countryList, RegistrationActivity.this);
+                list.setAdapter(adapter);
+            }
+        }).start();
     }
     @OnClick(R.id.create)
     public void onClick(){
